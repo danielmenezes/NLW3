@@ -1,4 +1,4 @@
-import { request, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import OrphanageView from '../views/OrphanagesView';
 import * as Yup from 'yup';
@@ -54,7 +54,7 @@ export default {
             about,
             instructions,
             opening_hours,
-            open_on_weekends,
+            open_on_weekends: open_on_weekends === 'true',
             images
         }
 
@@ -77,11 +77,13 @@ export default {
         await schema.validate(data, {
             abortEarly: false
         })
-    
+
+        
+
         const orphanage = orphanagesRepository.create(data);
     
         await orphanagesRepository.save(orphanage);
-    
+
         return res.status(201).json(orphanage);
     }
 };
